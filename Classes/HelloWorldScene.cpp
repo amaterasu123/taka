@@ -4,15 +4,21 @@ USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
-    // 'scene' is an autorelease object
+    //シーンを作成します
     auto scene = Scene::create();
+    
+    //cocos2d-xに用意されているカラーセットを使って、背景色と範囲を指定します
+    auto bg = LayerGradient::create(Color4B(0,0,0,255), Color4B(150,25,0,255));
+    
+    //シーンを追加します
+    scene->addChild(bg);
     
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
-
+    
     // return the scene
     return scene;
 }
@@ -42,7 +48,50 @@ bool HelloWorld::init()
     
 	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
                                 origin.y + closeItem->getContentSize().height/2));
-
+    
+    //定期的に実行するタイマー
+    
+    //タイマーの除去
+    
+    //イベントリスナー作成
+    auto listener = EventListenerTouchOneByOne::create();
+    
+    //イベントを読み込むかどうか
+    listener->setSwallowTouches(true);
+    
+    //タッチ開始
+    listener->onTouchBegan = [](Touch* touch, Event* event){
+        
+        //タッチ開始時の処理を書く
+        log("ごみ");
+        
+        return true;
+    };
+    
+    //タッチ中
+    listener->onTouchMoved = [](Touch* touch, Event* event){
+        
+        //タッチ中の処理を書く
+        log("ハゲ");
+    };
+    
+    //タッチ終了
+    listener->onTouchEnded = [](Touch* touch, Event* event){
+        
+        //タッチ終了時の処理を書く
+        log("バイバイ");
+    };
+    
+    //タッチキャンセル
+    listener->onTouchCancelled = [](Touch* touch, Event* event){
+        
+        //タッチキャンセル時の処理を書く
+        
+    };
+    
+    //イベントリスナーを登録
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    
     // create menu, it's an autorelease object
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
@@ -84,3 +133,5 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
+
+
